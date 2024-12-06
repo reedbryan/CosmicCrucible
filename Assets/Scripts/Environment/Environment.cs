@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Environment : MonoBehaviour
 {
+    public GameplayCycle gameplayCycle;
     public GameObject empty;
     GameObject foregroundAnchor;
     GameObject backgroundAnchor;
@@ -44,7 +45,9 @@ public class Environment : MonoBehaviour
 
     private void Update()
     {
-        placePickUps();
+        if (gameplayCycle.gameOn){
+            placePickUps();
+        }
     }
 
     void placePickUps()

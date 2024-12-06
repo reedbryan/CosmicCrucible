@@ -39455,7 +39455,7 @@ MonoBehaviour:
     Player
     4: status
 
-    CPUs: 5'
+    CPUs: 0'
 --- !u!222 &1212864970
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -39616,6 +39616,7 @@ GameObject:
   - component: {fileID: 1315009067}
   - component: {fileID: 1315009068}
   - component: {fileID: 1315009069}
+  - component: {fileID: 1315009070}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -39653,9 +39654,12 @@ MonoBehaviour:
   playerList: []
   inGamePlayerList: []
   controllerList: 
+  cpu_spawntime_interval: 5
   playerPrefab: {fileID: 8464653815175844345, guid: 3a2038cc3eb5d4db5b8f75e0bf32afed, type: 3}
   CPUPrefab: {fileID: 8464653815175844345, guid: 21efdf20820f04d9bb059a90c50cb61c, type: 3}
   empty: {fileID: 1459174234241096635, guid: fcad8632063bc440c947076382f06d62, type: 3}
+  Cam: {fileID: 1325854532}
+  gameplayCycle: {fileID: 1315009070}
 --- !u!114 &1315009068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39668,6 +39672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cee2b7ac4fb447199cce7ae51431ca9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameplayCycle: {fileID: 1315009070}
   empty: {fileID: 1459174234241096635, guid: fcad8632063bc440c947076382f06d62, type: 3}
   speedBoostPrefab: {fileID: 4102373427081887085, guid: 2a0cad897215e4261b2d0aece35c7c3e, type: 3}
   healthPickup: {fileID: 4102373427081887085, guid: 40d6d85b448904e6cac713a82e8fe05e, type: 3}
@@ -39697,6 +39702,21 @@ MonoBehaviour:
   Player_List_Text: {fileID: 1212864969}
   Spawn_Instructions_Text: {fileID: 555715997}
   DamageMarkerPrefab: {fileID: 6923028059979388516, guid: f442c6da7897d4b6cbdc5262b821d029, type: 3}
+--- !u!114 &1315009070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315009065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0005372b5361e496e8e87feebf486752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GM: {fileID: 1315009067}
+  gameOn: 0
+  run_timer: 0
 --- !u!1 &1325854530
 GameObject:
   m_ObjectHideFlags: 0

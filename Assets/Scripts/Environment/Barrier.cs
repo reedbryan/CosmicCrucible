@@ -12,8 +12,13 @@ public class Barrier : MonoBehaviour
         // on player collision
         if (hit.tag == "Player")
         {
-            Rigidbody2D rb = hit.GetComponent<Rigidbody2D>();
-            rb.velocity *= -0.85f; // Reverse and dampen player velocity
+            if (hit.GetComponent<CPU_Logic>() != null){
+                hit.GetComponent<DamageIntake>().Die();
+            }
+            else {
+                Rigidbody2D rb = hit.GetComponent<Rigidbody2D>();
+                rb.velocity *= -0.85f; // Reverse and dampen player velocity
+            }
         }
     }
 }

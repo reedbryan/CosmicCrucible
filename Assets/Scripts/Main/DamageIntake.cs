@@ -8,6 +8,8 @@ public class DamageIntake : MonoBehaviour
     PlayerID ID;
     InGameUI inGameUI;
 
+    // references
+    public GameplayCycle gameplayCycle;
     [SerializeField] GameObject debrisPrefab;
 
     public float maxHP;
@@ -75,7 +77,7 @@ public class DamageIntake : MonoBehaviour
         Debug.Log("Create debris");
     }
 
-    void Die()
+    public void Die()
     {
         if (gameObject.CompareTag("Player")) // If game object this script is attached to is a player
         {

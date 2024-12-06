@@ -14,12 +14,11 @@ public class InGameUI : MonoBehaviour
     {
         Update_Spawn_Instructions();
         Update_Player_List();
-    
     }
 
     public Text Player_List_Text;
-    private string player_list_str;
     private int local_player_count;
+
     void Update_Player_List(){
         
         // Check for change in GM.inGamePlayerList - if not then return
@@ -32,12 +31,12 @@ public class InGameUI : MonoBehaviour
         // If change in GM.inGamePlayerList:
         // Update the player info
         int lastNum = 1000000;
-        player_list_str = "";
+        string player_list_str = "";
         foreach (PlayerID player in GM.playerList){
             string status = "Dead";
             
-            foreach (PlayerID p in GM.inGamePlayerList){
-                if (p.playerNumber == player.playerNumber){
+            foreach (PlayerID pID in GM.inGamePlayerList){
+                if (pID.playerNumber == player.playerNumber){
                     status = "Alive";
                 }
             }

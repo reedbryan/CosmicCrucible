@@ -10,6 +10,8 @@ public class PlayerID : MonoBehaviour
 
     /* Player stats */
 
+    public float timeAlive;
+
     // Physics
     public float thrust;
     public float drag;
@@ -38,5 +40,11 @@ public class PlayerID : MonoBehaviour
         // Get game manager script
         GameObject gmOb = GameObject.Find("GameManager");
         gm = gmOb.GetComponent<GameManager>();
+
+        timeAlive = 0;
+    }
+
+    void Update(){
+        timeAlive += Time.deltaTime;
     }
 }
