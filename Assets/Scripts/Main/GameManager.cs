@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// YOYO WHAS GOOD
+
 public class GameManager : MonoBehaviour
 {
+    // Global variables - - - - - - - - - - - - - - - - - - -
+    
     /// <summary>
     /// PlayerList is an array of PlayerID held on child gameobjects of the game manager. These gameobjects act as profiles for the players in the game and are not destroyed when the player
     /// dies but instead will serve as blue prints to respawn.
@@ -20,14 +25,26 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public List<int> controllerList = new List<int>();
 
-    // prefabs
+
+    public float cpu_spawntime_interval;
+    private float cpu_spawntimer;
+    private float cpu_count = 0;
+
+
+    // references - - - - - - - - - - - - - - - - - - - - - - -
     public GameObject playerPrefab;
     public GameObject CPUPrefab;
     public GameObject empty;
+    public Camera Cam;
+     public GameplayCycle gameplayCycle;
 
     private void Awake()
     {
-        int max = 3; // max is the amount of controllers
+        // set cpu timer
+        cpu_spawntimer = cpu_spawntime_interval;
+        
+        int max = 4; // max is the amount of controllers
+        max--; 
 
         // controllerList = [0, 1, 2, 3] (respective controller numbers)
         for (int i = 0; i <= max; i++) 
@@ -42,9 +59,24 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         newPlayerCheck();
-
         newCPUCheck();
 
+        // cpu spawn routine
+        if (gameplayCycle.gameOn){
+            cpu_spawntimer -= Time.deltaTime;
+            if (cpu_spawntimer < 0){
+                if (cpu_count <= 3){
+                    spawnCPU();
+                    cpu_spawntimer = cpu_spawntime_interval + cpu_spawntime_interval * cpu_count;
+                }
+            }
+        }
+
+        testControllerInput();
+    }
+
+
+    void testControllerInput(){
         /* - - Test controller number - - */
         if (Input.GetButtonDown("J1B0"))
         {
@@ -53,6 +85,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("J2B0"))
         {
             Debug.Log("Controller 2");
+        }
+        if (Input.GetButtonDown("J3B0"))
+        {
+            Debug.Log("Controller 3");
         }
         /* - - - - - - - - - - - - - - - - */
     }
@@ -66,8 +102,9 @@ public class GameManager : MonoBehaviour
         }
     }
     public void spawnCPU(){
-        GameObject newCPU = spawnPlayer(CPUPrefab);
+        GameObject newCPU = spawnPlayer(CPUPrefab, true);
         newCPU.GetComponent<PlayerID>().playerNumber = -1;
+        cpu_count++;
     }
 
     void newPlayerCheck()
@@ -113,7 +150,13 @@ public class GameManager : MonoBehaviour
     /// <param name="controllerNumber"></param>
     /// <param name="playerNumber"></param>
     public void addPlayer(int controllerNumber, int playerNumber)
-    {
+    {        
+        /*  if this is the first player entering the game
+            then toggle the gameOn global variable */  
+        if (gameplayCycle.gameOn == false){
+            gameplayCycle.gameOn = true;
+        }
+        
         // create new player and the playerID and save the ID
         GameObject nPlayer;
 
@@ -147,7 +190,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Did not find match");
 
-                nPlayer = spawnPlayer(playerPrefab);
+                nPlayer = spawnPlayer(playerPrefab, false);
                 createPlayerProfile(nPlayer, playerNumber, controllerNumber);
                 assignPlayerValues(controllerNumber, playerNumber, nPlayer, false);
             }
@@ -156,7 +199,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Found match");
 
-                nPlayer = spawnPlayer(match.gameObject);
+                nPlayer = spawnPlayer(match.gameObject, false);
                 assignPlayerValues(controllerNumber, nPlayer.GetComponent<PlayerID>().playerNumber, nPlayer, false);
             }
         }
@@ -165,13 +208,13 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("No players yet");
 
-            nPlayer = spawnPlayer(playerPrefab);
+            nPlayer = spawnPlayer(playerPrefab, false);
             createPlayerProfile(nPlayer, playerNumber, controllerNumber);
             assignPlayerValues(controllerNumber, playerNumber, nPlayer, false);
         }
     }
 
-    GameObject spawnPlayer(GameObject bluePrint)
+    GameObject spawnPlayer(GameObject bluePrint, bool isCPU)
     {
         GameObject nPlayer;
 
@@ -181,12 +224,18 @@ public class GameManager : MonoBehaviour
             Vector2 avPos = Vector2.zero;
             foreach (var ID in inGamePlayerList)
             {
-                avPos += new Vector2(ID.transform.position.x + Random.Range(-10f, 10f),
-                                     ID.transform.position.y + Random.Range(-10f, 10f));
+                avPos += new Vector2(ID.transform.position.x + UnityEngine.Random.Range(-10f, 10f),
+                                    ID.transform.position.y + UnityEngine.Random.Range(-10f, 10f));
             }
+            avPos = avPos / inGamePlayerList.Count;
+
+            // get a location inside of camera view, but away from the player
+            Vector2 buffer = new Vector2(Cam.orthographicSize * 1.85f, Cam.orthographicSize);
+            buffer *= UnityEngine.Random.Range(0.1f, 0.5f);
+            avPos += buffer;
 
             // Spawn new player at the above position
-            nPlayer = Instantiate(bluePrint, avPos / inGamePlayerList.Count, transform.rotation);
+            nPlayer = Instantiate(bluePrint, avPos, transform.rotation);
         }
         else
         {
@@ -267,6 +316,8 @@ public class GameManager : MonoBehaviour
          * are only to be used as blueprint when respawning the assigned player.
          */
     }
+
+    
 
     /// <summary>
     /// Remove a player from the inGamePlayer list. This should be called when a player dies.
