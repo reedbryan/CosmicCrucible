@@ -85,6 +85,9 @@ public class PlayerAbilities : MonoBehaviour
 
     void exicuteBoost()
     {
+        if (ID.movement_enabled == false) 
+            return;
+
         float radAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
 
         float x = Mathf.Sin(radAngle) * -1f;

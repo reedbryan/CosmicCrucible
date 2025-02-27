@@ -4,12 +4,23 @@ using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InGameUI : MonoBehaviour
 {
     public GameManager GM;
+    public GameplayCycle GameplayCycle;
     public Canvas canvas;
 
+    private void Start () {
+        if (GameData.Gamemode == "survival"){
+            InvokeRepeating("Update_Run_Timer", 1f, 1f);  //1s delay, repeat every 1s (for runtime timer)
+        }
+        else {
+            Run_Timer_Text.text = "Press n to spawn CPU";
+        }
+    }
+    
     private void Update()
     {
         Update_Spawn_Instructions();
@@ -17,8 +28,18 @@ public class InGameUI : MonoBehaviour
     }
 
     public Text Player_List_Text;
+    public Text Run_Timer_Text;
     private int local_player_count;
 
+    void Update_Run_Timer(){  
+        
+        // Clamp the value to a maximum of 999
+        int clampedValue = Mathf.Clamp(Mathf.FloorToInt(GameplayCycle.run_timer), 0, 999);
+
+        // Convert to string with leading zeros
+        string formated_runtime_value = clampedValue.ToString("D3");
+        Run_Timer_Text.text = "Run time: " + formated_runtime_value;
+    }
     void Update_Player_List(){
         
         // Check for change in GM.inGamePlayerList - if not then return
@@ -64,6 +85,20 @@ public class InGameUI : MonoBehaviour
             Spawn_Instructions_Text.enabled = true;
         }
         else Spawn_Instructions_Text.enabled = false;
+    }
+
+    public void DisplayPrevRun(float run_time){
+        // Clamp the value to a maximum of 999
+        int clampedValue = Mathf.Clamp(Mathf.FloorToInt(run_time), 0, 999);
+
+        // Convert to string with leading zeros
+        string formated_runtime_value = clampedValue.ToString("D3");
+        
+        Spawn_Instructions_Text.text = "Previous Run Time: " + formated_runtime_value + "\nPress 'space' or 'x' to start a new run";
+    }
+
+    public void OnExitButton(){
+        SceneManager.LoadScene("Menu");
     }
 
 

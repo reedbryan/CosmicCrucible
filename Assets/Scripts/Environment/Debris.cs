@@ -64,7 +64,7 @@ public class Debris : MonoBehaviour
 
         // Particule system
         float angle = (Mathf.Atan2(playerVelocity.x, playerVelocity.y) * Mathf.Rad2Deg) - 90;
-        Debug.Log("Angle: " + angle);
+        //Debug.Log("Angle: " + angle);
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angle);
         PS3.Emit(50);
 

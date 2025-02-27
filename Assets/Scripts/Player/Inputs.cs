@@ -62,7 +62,7 @@ public class Inputs : MonoBehaviour
         }
 
         // Primary fire
-        if (Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.Space)) // Right click or space (if using trackpad)
+        if (Input.GetMouseButton(1) || Input.GetKey(KeyCode.Space)) // Right click or space (if using trackpad)
         {
             abilities.request("PrimaryFire");
         }

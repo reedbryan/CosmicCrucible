@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Events;
 
-// YOYO WHAS GOOD
+
 
 public class GameManager : MonoBehaviour
 {
-    // Global variables - - - - - - - - - - - - - - - - - - -
+    // Global player lists - - - - - - - - - - - - - - - - - - - - - -
     
     /// <summary>
     /// PlayerList is an array of PlayerID held on child gameobjects of the game manager. These gameobjects act as profiles for the players in the game and are not destroyed when the player
@@ -25,32 +27,55 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public List<int> controllerList = new List<int>();
 
+    // cpu spawning values - - - - - - - - - - - - - - - - - - - - - - -
+    [SerializeField]private float cpu_spawntime_interval;
+    [SerializeField]private float cpu_spawntimer;
+    [SerializeField]private float cpu_count = 0;
+    [SerializeField]private int max_cpu_count;
+    [SerializeField]private int cpu_spawning_level = 1;
 
-    public float cpu_spawntime_interval;
-    private float cpu_spawntimer;
-    private float cpu_count = 0;
 
-
-    // references - - - - - - - - - - - - - - - - - - - - - - -
+    // references - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     public GameObject playerPrefab;
     public GameObject CPUPrefab;
     public GameObject empty;
     public Camera Cam;
-     public GameplayCycle gameplayCycle;
+    public GameplayCycle GC;
 
+    public UnityEvent onResetMap;
+
+    public void ResetMap()
+    {
+        onResetMap.Invoke();
+    }
+    
     private void Awake()
     {
-        // set cpu timer
-        cpu_spawntimer = cpu_spawntime_interval;
-        
-        int max = 4; // max is the amount of controllers
-        max--; 
+        config_CPU_spanwing_values();
 
         // controllerList = [0, 1, 2, 3] (respective controller numbers)
-        for (int i = 0; i <= max; i++) 
+        for (int i = 0; i <= 3; i++) 
         {
             controllerList.Add(i);
         }
+    }
+
+    void config_CPU_spanwing_values(){
+        if (GameData.Gamemode == "survival"){
+            // get a player count
+            int player_count = 0;
+            if (PlayerData.keyboard_player != null) player_count++;
+            if (PlayerData.controller_players != null) player_count += PlayerData.controller_players.Count;
+            
+            // set cpu timer
+            cpu_spawntime_interval = 10 / player_count;
+            cpu_spawntimer = 3; // 3 second buffer before first CPU spawn
+
+            // set cpu count
+            max_cpu_count = 2 + (int)(player_count * 1.5f);
+        }
+        else if (GameData.Gamemode == "sandbox"){}
+        else Debug.Log("ERROR: GameData.Gamemode not assigned");
     }
 
     private void Update()
@@ -59,20 +84,42 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         newPlayerCheck();
-        newCPUCheck();
+        CPU_spawn_Routine();
 
-        // cpu spawn routine
-        if (gameplayCycle.gameOn){
-            cpu_spawntimer -= Time.deltaTime;
-            if (cpu_spawntimer < 0){
-                if (cpu_count <= 3){
+        testControllerInput();
+    }
+
+    private void CPU_spawn_Routine(){
+        // SURVIVAL routine
+        if (GameData.Gamemode == "survival"){
+            // cpu spawn routine
+            if (GC.gameOn && cpu_count < max_cpu_count){
+                cpu_spawntimer -= Time.deltaTime;
+                if (cpu_spawntimer < 0){
                     spawnCPU();
-                    cpu_spawntimer = cpu_spawntime_interval + cpu_spawntime_interval * cpu_count;
+                    
+                    // calculate the cpu spawning level
+                    cpu_spawning_level = (int)GC.run_timer / 20;
+                    if (cpu_spawning_level > 10) cpu_spawning_level = 10;
+                    if (cpu_spawning_level < 1) cpu_spawning_level = 1;
+
+                    // re-assign the spawn timer based on the spawning level
+                    cpu_spawntimer = cpu_spawntime_interval / cpu_spawning_level;
                 }
             }
         }
 
-        testControllerInput();
+        // SANDBOX routine
+        else if (GameData.Gamemode == "sandbox"){
+            // Input check (if n key pressed -> spawn cpu)
+            if (Input.GetKeyDown("n"))
+            {
+                spawnCPU();
+            }
+        }
+
+
+        else Debug.Log("ERROR: GameData.Gamemode not assigned");
     }
 
 
@@ -93,17 +140,9 @@ public class GameManager : MonoBehaviour
         /* - - - - - - - - - - - - - - - - */
     }
 
-    void newCPUCheck()
-    {
-        // Input check (if n key pressed -> spawn cpu)
-        if (Input.GetKeyDown("n"))
-        {
-            spawnCPU();
-        }
-    }
     public void spawnCPU(){
-        GameObject newCPU = spawnPlayer(CPUPrefab, true);
-        newCPU.GetComponent<PlayerID>().playerNumber = -1;
+        spawnPlayer(CPUPrefab, true);
+        Debug.Log("cpu_count: " + cpu_count);
         cpu_count++;
     }
 
@@ -118,20 +157,26 @@ public class GameManager : MonoBehaviour
 
             if (controllerNumber != 0)
             {
+                //Debug.Log("CONTROLLER#" + controllerNumber);
+                
                 // Controller check
-                if (Input.GetButtonDown("J" + controllerNumber + "B1") && !gotInput)
+                if (Input.GetButtonDown("J" + controllerNumber + "B1") && !gotInput && PlayerData.controller_players != null)
                 {
-                    addPlayer(controllerNumber, playerList.Count + 1);
+                    Debug.Log("CONTROLLER#" + controllerNumber + " HIT");
+                    
+                    addPlayer(controllerNumber);
                     controllersToRemouve.Add(controllerNumber);
                     gotInput = true;
                 }
             }
             else
             {
+                //Debug.Log("KEYBOARD");
                 // Keyboard check
-                if (Input.GetKeyDown(KeyCode.Space) && !gotInput)
+                if (Input.GetKeyDown(KeyCode.Space) && !gotInput && PlayerData.keyboard_player != null)
                 {
-                    addPlayer(0, playerList.Count + 1); // Controllernumber 0 = keyboard
+                    Debug.Log("KEYBOARD HIT");
+                    addPlayer(controllerNumber); // Controllernumber 0 = keyboard
                     controllersToRemouve.Add(controllerNumber);
                     gotInput = true;
                 }
@@ -144,171 +189,191 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void spawnPlayer(GameObject profile, bool isCPU)
+    {
+        GameObject nPlayer;
+        Vector2 pos;
+
+        string name;
+
+        // get a position to spawn from
+        if (!isCPU){
+            // if spawning a new REAL player:
+            
+            // if this isn't the first real player:
+            if (playerList.Count > 1){
+                // get the average position between players
+                pos = Vector2.zero;
+                foreach (var player in playerList)
+                {
+                    pos += new Vector2(player.transform.position.x + UnityEngine.Random.Range(-10f, 10f)
+                                        ,player.transform.position.y + UnityEngine.Random.Range(-10f, 10f));
+                }
+                pos = pos / playerList.Count;
+            }
+            // if it is the first real player:
+            else {
+                // set position to 0,0,0
+                pos = Vector2.zero;
+            }
+
+            // name the player
+            name = "player#" + profile.GetComponent<PlayerID>().playerNumber;
+        }
+        else{
+            // if spawning a new CPU
+            // get a position withen cameraview
+            float buffer = Cam.orthographicSize;
+            pos = Cam.transform.position + new Vector3(buffer * UnityEngine.Random.Range(-1f,1f)
+                                                              ,buffer * UnityEngine.Random.Range(-1f,1f));
+            
+            // name the CPU
+            name = "CPU";
+        }
+
+        nPlayer = Instantiate(profile, pos, transform.rotation);    // create player from profile
+        nPlayer.name = name;                                        // name player
+        inGamePlayerList.Add(nPlayer.GetComponent<PlayerID>());     // add player to in game players list
+        nPlayer.SetActive(true);                                    // set the player to active
+    }
+
     /// <summary>
     /// Creates new profile on gm.
     /// </summary>
     /// <param name="controllerNumber"></param>
     /// <param name="playerNumber"></param>
-    public void addPlayer(int controllerNumber, int playerNumber)
+    public void addPlayer(int controllerNumber)
     {        
         /*  if this is the first player entering the game
             then toggle the gameOn global variable */  
-        if (gameplayCycle.gameOn == false){
-            gameplayCycle.gameOn = true;
+        if (GC.gameOn == false){
+            GC.StartRun();
         }
-        
-        // create new player and the playerID and save the ID
-        GameObject nPlayer;
 
-        if (playerList.Count > 0)
+
+        // Check if this profile exists in the player list
+        // if it does that means the player isn't new but is just respawning
+        PlayerID match = null;
+        bool matchFound = false;
+        foreach (var profile in playerList)
         {
-            PlayerID match = null;
-            bool matchFound = false;
-
-            //Debug.Log("controllerNumber: " + controllerNumber);
-
-            foreach (var profile in playerList)
+            if (profile.controllerNumber == controllerNumber)
             {
-                //Debug.Log("profile.controllerNumbers: " + profile.controllerNumber);
-                if (profile.controllerNumber == controllerNumber)
+                if (!matchFound)
                 {
-                    if (!matchFound)
-                    {
-                        match = profile;
-                        matchFound = true;
-                    }
-                }
-                else
-                {
-                    if (!matchFound)
-                        match = null;
+                    match = profile;
+                    matchFound = true;
                 }
             }
-
-            // If the player does not have a profile on the gm and therefore IS SPAWNING FOR THE FIRST TIME.
-            if (match == null)
-            {
-                Debug.Log("Did not find match");
-
-                nPlayer = spawnPlayer(playerPrefab, false);
-                createPlayerProfile(nPlayer, playerNumber, controllerNumber);
-                assignPlayerValues(controllerNumber, playerNumber, nPlayer, false);
-            }
-            // If the player does have a profile on the gm and therefor is NOT SPAWNING FOR THE FIRST TIME.
             else
             {
-                Debug.Log("Found match");
-
-                nPlayer = spawnPlayer(match.gameObject, false);
-                assignPlayerValues(controllerNumber, nPlayer.GetComponent<PlayerID>().playerNumber, nPlayer, false);
+                if (!matchFound)
+                    match = null;
             }
         }
-        // If no players have been spawn so for and therefore this IS SPAWNING FOR THE FIRST TIME.
+
+        // If the player does not have a profile on the gm and therefore IS SPAWNING FOR THE FIRST TIME.
+        if (match == null)
+        {
+            Debug.Log("Did not find match");
+
+            GameObject profile = createPlayerProfile(controllerNumber);
+            spawnPlayer(profile, false);
+        }
+        // If the player does have a profile on the gm and therefor is NOT SPAWNING FOR THE FIRST TIME.
         else
         {
-            Debug.Log("No players yet");
+            Debug.Log("Found match");
 
-            nPlayer = spawnPlayer(playerPrefab, false);
-            createPlayerProfile(nPlayer, playerNumber, controllerNumber);
-            assignPlayerValues(controllerNumber, playerNumber, nPlayer, false);
+            spawnPlayer(match.gameObject, false);
         }
     }
+    
+    GameObject createPlayerProfile(int controllerNumber)
+    {        
+        Debug.Log("createPlayerProfile");
+        
+        // Instantiate a basic player prefab
+        // This will act as the player's profile (data to be used when respawning the player)
+        GameObject profile = Instantiate(playerPrefab);
+        PlayerID ID = profile.GetComponent<PlayerID>();
 
-    GameObject spawnPlayer(GameObject bluePrint, bool isCPU)
-    {
-        GameObject nPlayer;
+        Debug.Log("1");
 
-        if (inGamePlayerList.Count > 0)
-        {
-            // Get average distance between players
-            Vector2 avPos = Vector2.zero;
-            foreach (var ID in inGamePlayerList)
-            {
-                avPos += new Vector2(ID.transform.position.x + UnityEngine.Random.Range(-10f, 10f),
-                                    ID.transform.position.y + UnityEngine.Random.Range(-10f, 10f));
+        // get correct player data
+        Dictionary<string, float> playerData;
+        Debug.Log("1.1");
+        if (controllerNumber == 0){
+            // if keyboard player
+            playerData = PlayerData.keyboard_player;
+            Debug.Log("1.1.1");
+        }
+        else {
+            // if controller player
+            if (PlayerData.controller_players[controllerNumber-1] == null){
+                Debug.Log("CONTROLLER NUMBER GREATER THAN PLAYERS ADDED, FIX THIS SHIT"); // FIXXXXXXXXXX
+                return null;
             }
-            avPos = avPos / inGamePlayerList.Count;
-
-            // get a location inside of camera view, but away from the player
-            Vector2 buffer = new Vector2(Cam.orthographicSize * 1.85f, Cam.orthographicSize);
-            buffer *= UnityEngine.Random.Range(0.1f, 0.5f);
-            avPos += buffer;
-
-            // Spawn new player at the above position
-            nPlayer = Instantiate(bluePrint, avPos, transform.rotation);
+            else {
+                playerData = PlayerData.controller_players[controllerNumber-1];
+                Debug.Log("1.1.2");
+            }
         }
-        else
-        {
-            // Spawn new player at 0,0,0
-            nPlayer = Instantiate(bluePrint, Vector3.zero, transform.rotation);
-        }
+        
+        Debug.Log("2");
 
-        inGamePlayerList.Add(nPlayer.GetComponent<PlayerID>());
-        nPlayer.SetActive(true);
-        return nPlayer;
-    }
-
-    void assignPlayerValues(int controllerNumber, int playerNumber, GameObject player, bool isProfile)
-    {
-        PlayerID ID = player.GetComponent<PlayerID>();
-
-        // add ID to inGamePlayerList and set new player to a controler/keyboard
-        ID.playerNumber = playerNumber;
+        // assign the player data to the profile: - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        
+        // admin
+        ID.playerNumber = (int)playerData["Player Number"];
         ID.controllerNumber = controllerNumber;
+        profile.name = "player" + ID.playerNumber + "Backup";
 
-        if (isProfile)
-            player.name = "player" + playerNumber + "Backup";
-        else
-            player.name = "Player" + playerNumber;
+        // movement
+        ID.thrust = playerData["thrust"];
+        ID.drag = playerData["drag"];
+        ID.rotationSpeed = playerData["rotation speed"];
 
-        Inputs nIn = player.GetComponent<Inputs>();
+        // primary fire
+        ID.primaryFireRate = playerData["fire rate"];
+        ID.primaryFirePower = playerData["damage"];
+        ID.primaryFireSpread = playerData["accuracy"];
+        ID.primaryFireCount = (int)playerData["count"];
+        ID.primaryFireForce = playerData["speed"];
+
+        // ability cooldowns
+        ID.missileCooldown = playerData["missile cooldown"];
+        ID.boostCooldown = playerData["boost cooldown"];
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        Debug.Log("3");
+
+        // configure inputs
+        Inputs inputs = profile.GetComponent<Inputs>();
         if (controllerNumber == 0)
-        {
-            nIn.usingController = false;
-        }
+            inputs.usingController = false;
         else
-        {
-            nIn.usingController = true;
-        }
+            inputs.usingController = true;
 
-        //Debug.Log("Controller number: " + controllerNumber);
-        //Debug.Log("Player added");
-    }
-
-    void createPlayerProfile(GameObject player, int playerNumber, int controllerNumber)
-    {
-        //Debug.Log("Created prof");
-
-        // Instantiate a clone of the player
-        GameObject anchor = Instantiate(player);
-
+        Debug.Log("4");
+        
         // Parent the clone to the Game Manager gameObject and name it
-        anchor.transform.parent = gameObject.transform; 
+        profile.transform.parent = gameObject.transform; 
 
-        // Assign values
-        assignPlayerValues(controllerNumber, playerNumber, anchor, true);
+        Debug.Log("5");
 
         // add ID to playerlist
-        playerList.Add(anchor.GetComponent<PlayerID>());
+        playerList.Add(ID);
+
+        Debug.Log("6");
 
         // Set the clone to notactive so it wont interact with the other gameObs in the environment
-        anchor.SetActive(false);
+        profile.SetActive(false);
+        
+        Debug.Log("7");
 
-        /*  Old code:
-        // Remove all children from the clone (healthbar, jets PS, etc)
-        for (int i = 0; i < anchor.transform.childCount; i++)
-        {
-            Destroy(anchor.transform.GetChild(i).gameObject);
-        }
-
-        // Remove all non-playerID components from the clone
-        foreach (var component in anchor.GetComponents<Component>()) 
-        {
-            if (component != anchor.GetComponent<PlayerID>() && component != anchor.transform)
-                Destroy(component);
-        }
-        */
-
+        return profile;
 
         /*
          * The clone now serves as the profile for the assigned player. It is attached
@@ -316,9 +381,7 @@ public class GameManager : MonoBehaviour
          * are only to be used as blueprint when respawning the assigned player.
          */
     }
-
     
-
     /// <summary>
     /// Remove a player from the inGamePlayer list. This should be called when a player dies.
     /// </summary>
@@ -329,16 +392,35 @@ public class GameManager : MonoBehaviour
 
         inGamePlayerList.Remove(ID);
 
-        // Run through all ints in controllerlist
-        foreach (var number in controllerList)
-        {
-            // If the controllerNumber you are trying to add is already in the list then don't add it
-            if (number == ID.controllerNumber)
-            {
-                return;
+        
+        if (ID.controllerNumber != -1){ // CPU's are set to -1
+            // check if all players are dead
+            bool player_alive_flag = false;
+            foreach (var player in inGamePlayerList){
+                if (player.controllerNumber != -1){
+                    // player alive
+                    player_alive_flag = true;
+                }
             }
+            if (player_alive_flag == false){
+                GC.EndRun();
+                Debug.Log("End Run");
+            }
+            
+            // Run through all ints in controllerlist
+            foreach (var number in controllerList)
+            {
+                // If the controllerNumber you are trying to add is already in the list then don't add it
+                if (number == ID.controllerNumber)
+                {
+                    return;
+                }
+            }
+            controllerList.Add(ID.controllerNumber);
         }
-
-        controllerList.Add(ID.controllerNumber);
+        else{
+            // if CPU decrment the CPU counter
+            cpu_count--;
+        }
     }
 }

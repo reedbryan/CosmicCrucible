@@ -10007,6 +10007,7 @@ GameObject:
   - component: {fileID: 7482195152818487505}
   - component: {fileID: 923926348222518730}
   - component: {fileID: 329287268646152823}
+  - component: {fileID: -3719366359697949237}
   m_Layer: 0
   m_Name: CPU player
   m_TagString: Player
@@ -10142,7 +10143,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -10175,13 +10176,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac0458a3ba444008831a093a841535a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNumber: 1
-  controllerNumber: 0
+  playerNumber: -1
+  controllerNumber: -1
+  timeAlive: 0
+  movement_enabled: 1
+  movement_disabled_timer: 0.5
   thrust: 12
   drag: 1
   rotationSpeed: 10
-  primaryFireRate: 0.1
-  primaryFirePower: 5
+  primaryFireRate: 0.2
+  primaryFirePower: 1
   primaryFireForce: 25
   primaryFireDrag: 1
   primaryFireSize: 1.5
@@ -10189,7 +10193,7 @@ MonoBehaviour:
   primaryFireSpread: 3
   primaryFireCount: 1
   primaryFireMass: 0.1
-  missileCooldown: 3
+  missileCooldown: 10
   boostCooldown: 2
 --- !u!114 &3589774029539067994
 MonoBehaviour:
@@ -10223,6 +10227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ac2525e8f4844259adf1079a8b467d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameplayCycle: {fileID: 0}
   debrisPrefab: {fileID: 5414322528752270749, guid: bbaa46bd09cc34fed9b3b9194499a13b, type: 3}
   maxHP: 100
   HP: 100
@@ -10258,3 +10263,17 @@ MonoBehaviour:
   target: {fileID: 6934558933500522814}
   desirability: 0
   targetPosMarker: {fileID: 6934558933500522814}
+--- !u!114 &-3719366359697949237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464653815175844345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a04d3af7d8b41099c36bcc1cd38afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExplosionPrefab: {fileID: 4454592841753605612, guid: bc34f23eea47844f0a559a751564b3e8, type: 3}
+  DebrisPrefab: {fileID: 5414322528752270749, guid: bbaa46bd09cc34fed9b3b9194499a13b, type: 3}

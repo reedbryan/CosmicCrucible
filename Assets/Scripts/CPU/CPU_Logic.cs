@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CPU_Logic : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class CPU_Logic : MonoBehaviour
     PlayerID ID;
     PlayerMovement movement;
     PlayerAbilities abilities;
+    GameManager GM;
 
     [SerializeField] List<GameObject> objectsInRange = new List<GameObject>();
     [SerializeField] float bubbleRadius;
@@ -18,19 +20,31 @@ public class CPU_Logic : MonoBehaviour
     [SerializeField] GameObject target;
     [SerializeField] float desirability;
     public GameObject targetPosMarker;
-
+    
     void Awake()
     {
         ID = GetComponent<PlayerID>();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
         abilities = GetComponent<PlayerAbilities>();
+        GM = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
     {
         getSerroundings();
         mainBehavior();
+    }
+
+    private void Start()
+    {
+        GM.onResetMap.AddListener(HandleReset);
+    }
+
+    private void HandleReset()
+    {
+        DamageIntake damageIntake = gameObject.GetComponent<DamageIntake>();
+        damageIntake.alterHP(-damageIntake.maxHP - 1, gameObject.transform.position);
     }
 
     void getSerroundings()
@@ -140,7 +154,7 @@ public class CPU_Logic : MonoBehaviour
         // Marker (for debuging)
         // Have false when the marker is not needed
         targetPosMarker.transform.position = newTargetPosition;
-        //targetPosMarker.SetActive(false);
+        targetPosMarker.SetActive(false);
 
         // Rotate the CPU to the new target position
         movement.setAxisInput(targetPos.x, targetPos.y * -1 * negativeCheck);
@@ -219,29 +233,49 @@ public class CPU_Logic : MonoBehaviour
 
     float getDesirability(GameObject subject)
     {
-        float dPrime;
+        float dPrime;   // Baseline desirability for a given object
+                        // REF:  speed boosts have dPrime = 5
+                        //       players have dPrime = 3
         float distance = General.Distance(transform.position, subject.transform.position);
         float dNet = 0;
-        float x1 = GetComponent<DamageIntake>().HP; // This CPU hp
+        DamageIntake this_DI = GetComponent<DamageIntake>();
+        float this_HP_norm = ((this_DI.HP - this_DI.maxHP) / this_DI.maxHP) + 1; // this CPU's hp: 1 full, 0 dead
 
         if (subject.CompareTag("Player"))
         {
-            dPrime = 3f;
-            float x2 = subject.GetComponent<DamageIntake>().HP; // Other player hp
+            if (subject.GetComponent<PlayerID>().playerNumber == -1)
+                dPrime = 1f;
+            else 
+                dPrime = 3f;
+                
+            DamageIntake subject_DI = subject.GetComponent<DamageIntake>();
+            float other_HP_norm = (subject_DI.HP - subject_DI.maxHP) / subject_DI.maxHP; // Other player hp
 
-            dNet = dPrime * ((30 + x1 - x2) / 10) * (1 / distance);
+            dNet = dPrime * ((30 + this_HP_norm - other_HP_norm) / 10) * (1 / distance);
+            //Debug.Log("Player being looked at from a distance of: " + distance + "\nAnd a desirebility of: " + dNet);
         }
         if (subject.CompareTag("Pickup"))
         {
             dPrime = subject.GetComponent<PickUp>().desirability;
-
+            
             dNet = dPrime * (1 / distance);
+            //Debug.Log("Pickup being looked at from a distance of: " + distance + "\nAnd a desirebility of: " + dNet);
         }
         if (subject.CompareTag("Health"))
         {
-            dPrime = subject.transform.GetChild(0).GetComponent<HealthPack>().healthGiven;
-
-            dNet = dPrime * (1 / distance) * ((GetComponent<DamageIntake>().maxHP / x1) / 10);
+            float health_recoverable = this_DI.maxHP - this_DI.HP;
+            float health_given = subject.transform.GetChild(0).GetComponent<HealthPack>().healthGiven;
+            if (health_recoverable < health_given){
+                // if the healthpack heals more than the CPU needs
+                dPrime = health_recoverable;
+            }else {
+                // if the healthpack heals less than the CPU needs i.e. they need that health pack
+                dPrime = health_given;
+            }
+            
+            dNet = dPrime * (100 / this_DI.maxHP) * (1 / distance);
+            //Debug.Log("dPrime: " + dPrime);
+            //Debug.Log("Health pack being looked at from a distance of: " + distance + "\nAnd a desirebility of: " + dNet);
         }
         if (subject.CompareTag("Projectile"))
         {
@@ -249,6 +283,7 @@ public class CPU_Logic : MonoBehaviour
                 dNet = 0;
             else
             {
+                //Debug.Log("Projectile being looked at from a distance of: " + distance + "\nAnd a desirebility of: " + dNet);
                 dPrime = -3f;
                 dNet = dPrime * (1 / distance);
             }

@@ -27,6 +27,7 @@ public class Projectile : MonoBehaviour
     /// </summary>
     public void SendInfo(float forceValue, float sizeValue, float massValue, float dragValue, float lifeTimeValue, float powerValue, float spreadValue, GameObject shooterValue)
     {
+        mass = massValue;
         force = forceValue;
         size = sizeValue;
         drag = dragValue;
@@ -34,7 +35,6 @@ public class Projectile : MonoBehaviour
         power = powerValue;
         shooter = shooterValue;
         spread = spreadValue;
-        mass = massValue;
 
         Launch();
     }
@@ -80,8 +80,6 @@ public class Projectile : MonoBehaviour
             }
             timeAfterStop -= 1 * Time.deltaTime;
         }
-
-        //lookForCollisions();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -175,7 +173,7 @@ public class Projectile : MonoBehaviour
 
         // Apply force
         Rigidbody2D subRb = subject.GetComponent<Rigidbody2D>();
-        subRb.velocity += (rb.velocity * rb.mass) / subRb.mass / 10f; ;
+        subRb.velocity += rb.velocity * rb.mass / subRb.mass / 10f; ;
 
         // Destroy this projectile to avoid dealing more damage
         Destroy(gameObject);

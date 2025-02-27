@@ -95,6 +95,7 @@ public class General : MonoBehaviour
     /// <returns></returns>
     public static Vector2 distanceInTime(Vector2 currpos, float time, Vector2 initialVelocity, float drag)
     {
+        if (drag == 0) drag = 1;
         Vector2 newpos = currpos + (initialVelocity / drag) * (1 - Mathf.Exp(-drag * time));
         return newpos;
     }

@@ -20,6 +20,8 @@ public class DamageIntake : MonoBehaviour
     [SerializeField] float passiveRegeneration;
     float PRtimer; // Passive regen timer
 
+    bool DieFunc_mutex = true; // false = locked, true = unlocked
+
     private void Awake()
     {
         GameObject GMOb = GameObject.Find("GameManager");
@@ -57,9 +59,9 @@ public class DamageIntake : MonoBehaviour
 
         // Real damage
         HP += amount;
-        if (HP <= 0)
+        if (HP <= 0 && DieFunc_mutex)
         {
-            //Debug.Log("Die called");
+            DieFunc_mutex = false; // lock mutex
             Die();
         }
         if (HP > maxHP)
@@ -74,7 +76,6 @@ public class DamageIntake : MonoBehaviour
         Debris newdebScript = newDebris.GetComponent<Debris>();
 
         newdebScript.sendInfo(GetComponent<Rigidbody2D>(), 3 , GetComponent<Rigidbody2D>().drag);
-        Debug.Log("Create debris");
     }
 
     public void Die()
@@ -86,12 +87,9 @@ public class DamageIntake : MonoBehaviour
                 createDebris();
             }
 
-            Debug.Log("YOYO");
-
             GM.removeInGamePlayer(ID);
-            Destroy(gameObject);
         }
-        //Debug.Log("Die");
-        Destroy(gameObject);
+        Debug.Log("Player #" + ID.playerNumber + " died");
+        Destroy(this.gameObject);
     }
 }

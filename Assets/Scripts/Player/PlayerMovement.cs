@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float xAxisInput;
     public float yAxisInput;
 
+
     void Awake()
     {
         inputs = GetComponent<Inputs>();
@@ -55,6 +56,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void Thrust()
     {
+        if (ID.movement_enabled == false) 
+            return;
+
         float radAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
 
         float x = Mathf.Sin(radAngle) * -1f;

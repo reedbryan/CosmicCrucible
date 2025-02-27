@@ -1,0 +1,21 @@
+BASE VALUES
+
+PLAYER:
+
+Movement:
+- Thrust: 		15
+- Drag: 		1
+- Rotation speed: 	15
+
+Primary Fire:
+- fire rate: 		0.1
+- fire power: 		10
+- speed: 		1
+- accuracy: 		6
+- count: 		1
+
+Abilities:
+- missle cooldown: 	5
+- boost cooldown: 	3
+
+CPU:

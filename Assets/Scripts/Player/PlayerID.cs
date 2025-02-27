@@ -11,6 +11,9 @@ public class PlayerID : MonoBehaviour
     /* Player stats */
 
     public float timeAlive;
+    public bool movement_enabled = true;
+    public float movement_disabled_timer = 0.5f;
+
 
     // Physics
     public float thrust;
@@ -46,5 +49,17 @@ public class PlayerID : MonoBehaviour
 
     void Update(){
         timeAlive += Time.deltaTime;
+        
+        
+        // movement disabled logic
+        if (movement_enabled == false){
+            if (movement_disabled_timer > 0){
+                movement_disabled_timer -= Time.deltaTime;
+            }
+            else {
+                movement_disabled_timer = 0.5f;
+                movement_enabled = true;
+            }
+        }
     }
 }

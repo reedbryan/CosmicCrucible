@@ -7,6 +7,7 @@ TagManager:
   - Projectile
   - Pickup
   - Health
+  - InputFieldInput
   layers:
   - Default
   - TransparentFX

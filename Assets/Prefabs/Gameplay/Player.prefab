@@ -9923,6 +9923,7 @@ GameObject:
   - component: {fileID: 7482195152818487505}
   - component: {fileID: 923926348222518730}
   - component: {fileID: 8899751528102327072}
+  - component: {fileID: 2004064748188494624}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -10057,19 +10058,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 1
   controllerNumber: 0
-  thrust: 12
+  timeAlive: 0
+  movement_enabled: 1
+  movement_disabled_timer: 0.5
+  thrust: 15
   drag: 1
-  rotationSpeed: 10
+  rotationSpeed: 15
   primaryFireRate: 0.1
-  primaryFirePower: 5
-  primaryFireForce: 25
-  primaryFireDrag: 1
+  primaryFirePower: 1000
+  primaryFireForce: 400
+  primaryFireDrag: 0.2
   primaryFireSize: 1.5
   primaryFireLifeTime: 3
-  primaryFireSpread: 3
+  primaryFireSpread: 6
   primaryFireCount: 1
-  primaryFireMass: 0.1
-  missileCooldown: 3
+  primaryFireMass: 1
+  missileCooldown: 0.1
   boostCooldown: 2
 --- !u!114 &8464653815175844344
 MonoBehaviour:
@@ -10118,6 +10122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ac2525e8f4844259adf1079a8b467d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameplayCycle: {fileID: 0}
   debrisPrefab: {fileID: 5414322528752270749, guid: bbaa46bd09cc34fed9b3b9194499a13b, type: 3}
   maxHP: 100
   HP: 100
@@ -10165,9 +10170,23 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.24873465
+--- !u!114 &2004064748188494624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464653815175844345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a04d3af7d8b41099c36bcc1cd38afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExplosionPrefab: {fileID: 4454592841753605612, guid: bc34f23eea47844f0a559a751564b3e8, type: 3}
+  DebrisPrefab: {fileID: 5414322528752270749, guid: bbaa46bd09cc34fed9b3b9194499a13b, type: 3}
