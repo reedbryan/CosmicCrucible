@@ -18,9 +18,6 @@ public class Inputs : MonoBehaviour
     //[SerializeField] float x;
     //[SerializeField] float y;
 
-    // Hold input booleans
-    bool B5down = false;
-
 
     private void Awake()
     {
@@ -43,7 +40,6 @@ public class Inputs : MonoBehaviour
         {
             KeyBoardInputs();
         }
-        
     }
 
     void KeyBoardInputs()

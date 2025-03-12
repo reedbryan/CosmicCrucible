@@ -8,9 +8,21 @@ Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler 
 
 [Download](https://reedoover.itch.io/cosmic-crucible)
 
+<hr/>
+
 ## Features
 
-### Character Builder
+### Local Multiplayer
+This project supports local multiplayer. Simply connect controller(s) to your computer and click the "add player" button in the menu to create profiles for each player.
+
+#### Keyboard/Controller input
+In the character creator (see below) you can select either "keyboard" or "controller" input, with the default being keyboard. Note, only one player can use keyboard input.
+
+Unity as customizable [input configurations](https://docs.unity3d.com/6000.0/Documentation/Manual/ios-handle-game-controller-input.html) for joystick input. In the Unity editor I set up joystick configurations for up to 3 controllers. Upon a player profile is created in the menu they are assigned a controllerNumber (0=keyboard, 1-3=controller) and are mapped to that players ID for input configuation.
+
+See `createPlayerProfile(int controllerNumber)` function in [GameManager.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameManager.cs) for mapping and `ControllerInputs()`/`KeyBoardInputs()` in [Inputs.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/Inputs.cs) for input configuration.
+
+### Character Creator
 Cosmic Crucible has a built in "ship" creator where select attributes of the player's ship can be altered for unique variable gameplay. To balance te ship builder, the player only has a certain amount of "cash" to spend alterations. The more an attribute is increased the more cash it will cost. Likewise, the more attribute is deacreased the more cash it will give back. This way the player can still create unique ships but is forced to lose certain stats in order to gain others.
 |  Before | After   |
 |---------|---------|
@@ -64,7 +76,9 @@ Unity's 2D Physics Engine is highly customizable, allowing devs to fine-tune gra
 #### Simulating Space
 Turning off the gravity scale and adjusting for minimal angular and linear drag, allows for gameobjects to drift through the environment like they were in outer space (SO COOL).
 
-The ships operated by the player and CPUs move through the evironment by applying a constant force to the back of the object. Allowing players to have a very high maximum velocity but with the consiquence of needing to apply equal force in the opposite direction to slow down again. This makes for choatic and in my opion very fun movement mechanics. 
+The ships operated by the player and CPUs move through the evironment by applying a constant force to the back of the object. Allowing players to have a very high maximum velocity but with the consiquence of needing to apply equal force in the opposite direction to slow down again. This makes for choatic and in my opion very fun movement mechanics.
+
+See [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/PlayerMovement.cs)
 
 #### Collisions
 Unity's Physics Engine handle collisions on its own but not quite in the way I wanted for the project. Unity's basic 2D collisions do not allow for two objects (with collider components) to pass bewteen each other. This is good but when two players collide at high speeds it lead to varying andd unpredictable results. Sometimes they would slide passed each other, maintaining velocity other times they would both come to an abrupt stop. I wanted a uniform reaction to player collision that also made for interesting gameplay. 
@@ -104,13 +118,33 @@ Camera.main.orthographicSize += diff_orthSize * Time.deltaTime;
 transform.position += new Vector3(diff_pos.x, diff_pos.y, 0) * Time.deltaTime;
 ```
 
-See full camera code at [GameCamera.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameCamera.cs).
+See [GameCamera.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameCamera.cs).
 
 ### Graphics
+#### Stars
+The in-game environment has 3 layers of stars that all move at different speeds reletive to the player to create the effect of moving through space. This is done by updating the position of each layer of stars by the players position multplied a value from 0 to 1 representing their deapth:
+```c#
+transform.position = (Vector2)mainCamera.transform.position * deapth;
+```
+A layer with a deapth of 1 moves with the player, making it look like the stars are so far away that the player doesn't even move reletive to their posistion. A layer with a deapth of 0.5 moves at half that speed to give the effect that the player is passing through the stars.
 
-#### Environment
+These stars were created using Unities [particle system](https://docs.unity3d.com/Manual/ParticleSystems.html) and are moved through the envirnoment from script (see [BackgroundLayer.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Environment/BackgroundLayer.cs)).
+
+#### Hit Markers & Health Bars
+When a player (or CPU) is hit by a projectile, collides with another player or collects a health pack their health is altered and that alteration is displayed to the player via hit markers. These hit markers are UI objects, instantiated on a damage event and have different sizes depending on the amount of hitpoint gained/lost:
+|  Gain   | Loss    |
+|---------|---------|
+| ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/greenHM.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/redHM.png) |
+
+Each player also has another UI object attached to them representing the difference between their current HP and max HP: 
+
+<hr/>
+
+## Game Modes
+### Survival
+### Sandbox
+
+<hr/>
 
 ## Motivation
 My motivation for the project stemed from wanting to create a game I could play with my younger brothers. We would play all sorts of games together when we were younger and as a young indie game dev I felt obligated to create a game we could play together.
-
-## Game Modes

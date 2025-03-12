@@ -19,9 +19,4 @@ public class StarPS : MonoBehaviour
         main.startLifetime = 100000;
         main.maxParticles = starCount;
     }
-
-    private void Update()
-    {
-        
-    }
 }

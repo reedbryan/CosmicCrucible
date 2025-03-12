@@ -291,36 +291,36 @@ public class GameManager : MonoBehaviour
     
     GameObject createPlayerProfile(int controllerNumber)
     {        
-        Debug.Log("createPlayerProfile");
+        //Debug.Log("createPlayerProfile");
         
         // Instantiate a basic player prefab
         // This will act as the player's profile (data to be used when respawning the player)
         GameObject profile = Instantiate(playerPrefab);
         PlayerID ID = profile.GetComponent<PlayerID>();
 
-        Debug.Log("1");
+        //Debug.Log("1");
 
         // get correct player data
         Dictionary<string, float> playerData;
-        Debug.Log("1.1");
+        //Debug.Log("1.1");
         if (controllerNumber == 0){
             // if keyboard player
             playerData = PlayerData.keyboard_player;
-            Debug.Log("1.1.1");
+            //Debug.Log("1.1.1");
         }
         else {
             // if controller player
             if (PlayerData.controller_players[controllerNumber-1] == null){
-                Debug.Log("CONTROLLER NUMBER GREATER THAN PLAYERS ADDED, FIX THIS SHIT"); // FIXXXXXXXXXX
+                //Debug.Log("CONTROLLER NUMBER GREATER THAN PLAYERS ADDED, FIX THIS SHIT"); // FIXXXXXXXXXX
                 return null;
             }
             else {
                 playerData = PlayerData.controller_players[controllerNumber-1];
-                Debug.Log("1.1.2");
+                //Debug.Log("1.1.2");
             }
         }
         
-        Debug.Log("2");
+        //Debug.Log("2");
 
         // assign the player data to the profile: - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
@@ -347,7 +347,7 @@ public class GameManager : MonoBehaviour
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        Debug.Log("3");
+        //Debug.Log("3");
 
         // configure inputs
         Inputs inputs = profile.GetComponent<Inputs>();
@@ -356,22 +356,22 @@ public class GameManager : MonoBehaviour
         else
             inputs.usingController = true;
 
-        Debug.Log("4");
+        //Debug.Log("4");
         
         // Parent the clone to the Game Manager gameObject and name it
         profile.transform.parent = gameObject.transform; 
 
-        Debug.Log("5");
+        //Debug.Log("5");
 
         // add ID to playerlist
         playerList.Add(ID);
 
-        Debug.Log("6");
+        //Debug.Log("6");
 
         // Set the clone to notactive so it wont interact with the other gameObs in the environment
         profile.SetActive(false);
         
-        Debug.Log("7");
+        //Debug.Log("7");
 
         return profile;
 
