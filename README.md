@@ -58,7 +58,7 @@ Vector2 targetPos = ((Vector2)transform.position - newTargetPosition).normalized
 ```
 See [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/General.cs) for my time/space evaluation functions.
 
-### Custom Physics
+### Physics
 Unity's 2D Physics Engine is highly customizable, allowing devs to fine-tune gravity, friction, and other properties for unique physics behaviors at will. Its flexible simulation control allows for real time customizability via scripts, making it ideal for dynamic gameplay mechanics and perfect for this project.
 
 #### Simulating Space
@@ -82,7 +82,29 @@ Below is a frame-by-frame display of a collision between a player (red) and a CP
 | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC4.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC5.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC6.png) |
 
 ### Scaling Camera
+The game's camera is something that took a lot of thought and editing to get in a state I was Ok with. Due to the game being local multiplayer I needed all players to be on screen at once, which in a large envirnonment can lead to some problems I still have not fully addressed.
 
+The current game camera posistions itself at the average between all player positions and scales its size to largest distance between two player positions (ignoring CPUs after it reaches 40m in diameter). This works just fine to get all players in view but can become a problem as players distance themselves further and further, making the camera eventually too see well. I thought about splitting the screen when players got too far apart but desided agaist it assuming players will stick togther.
+
+To make camera adjustments smooth it increments itself towards the ideal position & size instead of simply being set to those values:
+```c#
+/* increment camera position */
+// Current Values:
+float current_orthSize = Camera.main.orthographicSize;
+Vector2 current_pos = transform.position;
+
+// Difference Between Current and Ideal Values:
+float diff_orthSize = ideal_orthSize - current_orthSize;
+Vector2 diff_pos = ideal_pos - current_pos;
+
+// Increment orthagraphic camera size in real time
+Camera.main.orthographicSize += diff_orthSize * Time.deltaTime;
+
+// Increment position in real time
+transform.position += new Vector3(diff_pos.x, diff_pos.y, 0) * Time.deltaTime;
+```
+
+See full camera code at [GameCamera.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameCamera.cs).
 
 ### Graphics
 
