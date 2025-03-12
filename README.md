@@ -71,9 +71,13 @@ Unity's Physics Engine handle collisions on its own but not quite in the way I w
 
 To do this I wrote a script attached to each player to handle collisions (see [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/PlayerGraphics.cs)). The script distrubutes the difference in velocities upon collison back to the players, creating a sort of *bouncing* effect. On collision it also calculates an "impact" value based on the pre-collison velocity of the player. Each player's collision script will assign damage to the other player based on the impact value, rewarding the player who came into the collision with higher velocity. It will also create a particle explosion (scaled to the impact size) that inherites the player's velocity to show the magnitude of the collision.
 
-| Image 1 | Image 2 | Image 3 | Image 4 | Image 5 | Image 6 |
-|---------|---------|---------|---------|---------|---------|
-| ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC1.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC2.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC3.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC4.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC5.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC6.png) |
+| Frame 1 | Frame 2 | Frame 3 |
+|---------|---------|---------|
+| ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC1.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC2.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC3.png) |
+
+| Frame 4 | Frame 5 | Frame 6 |
+|---------|---------|---------|
+| ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC4.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC5.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/collisionSC6.png) |
 
 
 ### Scaling Camera
