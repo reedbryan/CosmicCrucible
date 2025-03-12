@@ -16,12 +16,13 @@ My motivation for the project stemed from wanting to create a game I could play 
 ## Features
 
 ### Character Builder
-Cosmic Crucible has a built in character creator where select attributes of the player's ship can be altered for unique variable gameplay.
-| Image 1 | Image 2 |
+Cosmic Crucible has a built in "ship" creator where select attributes of the player's ship can be altered for unique variable gameplay. To balance te ship builder, the player only has a certain amount of "cash" to spend alterations. The more an attribute is increased the more cash it will cost. Likewise, the more attribute is deacreased the more cash it will give back. This way the player can still create unique ships but is forced to lose certain stats in order to gain others.
+|  Before | After   |
 |---------|---------|
 | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerBuilder2.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerBuilder1.png) |
 
-
+All the stats from each ship are showcased in the "player list" before the players enter the game.
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerList.png)
 
 ### CPU Enemies
 #### Entity Prioritatization
