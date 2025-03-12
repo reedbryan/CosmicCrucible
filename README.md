@@ -17,6 +17,8 @@ My motivation for the project stemed from wanting to create a game I could play 
 
 ### Character Builder
 Cosmic Crucible has a built in character creator where select attributes of the player's ship can be altered for unique variable gameplay.
+<img src="https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerBuilder1.png" width="200"> 
+<img src="https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerBuilder2.png" width="200">
 
 ### CPU Enemies
 #### Entity Prioritatization
