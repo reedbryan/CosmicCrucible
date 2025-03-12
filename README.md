@@ -41,26 +41,26 @@ Each entity is given a "desirability" rating calculated every frame an based on 
 - Possible loss (For projectiles)
 See the `getDesirability(GameObject subject)` function in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs) for full desirability calculations.
 
-The CPU will select the entity with the largest desirability magnitude (positive or negative) as its "target", identifying the target as either *moving* or *static* and will approch the target occordingly.
+The CPU will select the entity with the largest desirability magnitude (positive or negative) as its "target", identifying the target as either **moving** or **moving** and will approch the target occordingly.
 
 #### Behavior
-If the CPU's target entity is *static* it will simply point itself towards the target, applying thrust to move in that direction (see `targetStatic(GameObject mostDesirable)` in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs)). 
+If the CPU's target entity is **moving** it will simply point itself towards the target, applying thrust to move in that direction (see `targetStatic(GameObject mostDesirable)` in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs)). 
 
-If the target is *moving* there are different considerations. If the target has negative desirebility it will point try to avoid colliding with that entity to avoid collision damage or get out of the line of fire. If the target has positive desirebility, which in this case means it is a player that has been evaluated as attackable. It will use the targets current velocity and the CPU's expected projectile path to calculate the point where they are most likely to meet, targeting this point instead of the targets actual posistion.
+If the target is **moving** there are different considerations. If the target has negative desirebility it will point try to avoid colliding with that entity or get out of the line of fire. If the target has positive desirebility, which in this case means it is a player that has been evaluated as attackable. It will use the targets current velocity and the CPU's expected projectile path to calculate the point where they are most likely to meet, targeting this point instead of the target's actual posistion.
 ```c#
-        // Get projectile velocity in vector2 form
-        float radAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
-        float x = Mathf.Sin(radAngle) * -1f;
-        float y = Mathf.Cos(radAngle);
-        Vector2 primFireV = (ID.primaryFireForce * 100 / ID.primaryFireMass / 50 * new Vector2(x,y)) + rb.velocity;
+// Get projectile velocity in vector2 form
+float radAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
+float x = Mathf.Sin(radAngle) * -1f;
+float y = Mathf.Cos(radAngle);
+Vector2 primFireV = (ID.primaryFireForce * 100 / ID.primaryFireMass / 50 * new Vector2(x,y)) + rb.velocity;
 
-        // Get the time it would take for the bullet to reach the other player and
-        // distance the other player will travel during that time
-        float timeForProj = General.timeToReach(transform.position, mostDesirable.transform.position, primFireV, ID.primaryFireDrag);
-        Vector2 newTargetPosition = General.distanceInTime(mostDesirable.transform.position, timeForProj, mostDrb.velocity, mostDrb.drag);
-        Vector2 targetPos = ((Vector2)transform.position - newTargetPosition).normalized;
+// Get the time it would take for the bullet to reach the other player and
+// distance the other player will travel during that time
+float timeForProj = General.timeToReach(transform.position, mostDesirable.transform.position, primFireV, ID.primaryFireDrag);
+Vector2 newTargetPosition = General.distanceInTime(mostDesirable.transform.position, timeForProj, mostDrb.velocity, mostDrb.drag);
+Vector2 targetPos = ((Vector2)transform.position - newTargetPosition).normalized;
 ```
-
+See [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/General.cs) for my time/space evaluation functions.
 
 ### Custom Physics
 #### Collisions
