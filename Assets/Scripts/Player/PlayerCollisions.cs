@@ -23,7 +23,6 @@ public class PlayerCollisions : MonoBehaviour
         if (hit.CompareTag("Player")) // If this projectile makes contact with another projectile
         {            
             // Get other player components
-            PlayerID other_ID = hit.GetComponent<PlayerID>();
             DamageIntake other_damageIntake = hit.GetComponent<DamageIntake>();
             Transform other_transform = hit.GetComponent<Transform>();
             PlayerCollisions other_playerCollisions = hit.GetComponent<PlayerCollisions>();
