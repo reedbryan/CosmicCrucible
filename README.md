@@ -59,9 +59,9 @@ Cosmic Crucible has a built in "ship" creator where select attributes of the pla
 
 
 ### CPU Enemies
-In the "survival" gamemode (see [Game Modes](#game-modes)) the player(s) will fight against CPU enemies that spawn throughout the environment. These CPUs act indopendently and will attack the player as well as each other.
+In the "survival" gamemode (see [Game Modes](#game-modes)), the player(s) will fight against CPU enemies that spawn throughout the environment. These CPUs act independently and will attack the player as well as each other.
 
-#### Entity Prioritatization
+#### Entity Prioritization
 Each CPU keeps track of all entities within a 200(unity meters) radius. 
 Valid entities include:
 - Other players (CPU or Non-CPU)
