@@ -132,11 +132,11 @@ These stars were created using Unities [particle system](https://docs.unity3d.co
 
 #### Hit Markers & Health Bars
 When a player (or CPU) is hit by a projectile, collides with another player or collects a health pack their health is altered and that alteration is displayed to the player via hit markers. These hit markers are UI objects, instantiated on a damage event and have different sizes depending on the amount of hitpoint gained/lost:
-|  Gain   | Loss    |
+|  Gain   | Loss   |
 |---------|---------|
 | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/greenHM.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/redHM.png) |
 
-Each player also has another UI object attached to them representing the difference between their current HP and max HP: 
+Each player also has another UI object attached to them representing the difference between their current HP and max HP.
 
 <hr/>
 
