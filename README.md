@@ -10,6 +10,28 @@ Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler 
 
 <hr/>
 
+## Table of Contents
+- [Features](#features)
+  - [Local Multiplayer](#local-multiplayer)
+  - [Keyboard/Controller Input](#keyboardcontroller-input)
+  - [Character Creator](#character-creator)
+  - [CPU Enemies](#cpu-enemies)
+    - [Entity Prioritization](#entity-prioritization)
+    - [Behavior](#behavior)
+  - [Physics](#physics)
+    - [Simulating Space](#simulating-space)
+    - [Collisions](#collisions)
+  - [Scaling Camera](#scaling-camera)
+  - [Graphics](#graphics)
+    - [Stars](#stars)
+    - [Gameplay Feedback](#gameplay-feedback)
+- [Game Modes](#game-modes)
+  - [Survival](#survival)
+  - [Sandbox](#sandbox)
+- [Motivation](#motivation)
+
+<hr/>
+
 ## Features
 
 ### Local Multiplayer
@@ -18,7 +40,7 @@ This project supports local multiplayer. Simply connect controller(s) to your co
 #### Keyboard/Controller input
 In the character creator (see below) you can select either "keyboard" or "controller" input, with the default being keyboard. Note, only one player can use keyboard input.
 
-Unity as customizable [input configurations](https://docs.unity3d.com/6000.0/Documentation/Manual/ios-handle-game-controller-input.html) for joystick input. In the Unity editor I set up joystick configurations for up to 3 controllers. Upon a player profile is created in the menu they are assigned a controllerNumber (0=keyboard, 1-3=controller) and are mapped to that players ID for input configuation.
+Unity as customizable [input configurations](https://docs.unity3d.com/6000.0/Documentation/Manual/ios-handle-game-controller-input.html) for controller (joystick) input. In the Unity editor I set up joystick configurations for up to 3 controllers. Upon a player profile is created in the menu they are assigned a controllerNumber (0=keyboard, 1-3=controller) and are mapped to that players ID for input configuation.
 
 See `createPlayerProfile(int controllerNumber)` function in [GameManager.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameManager.cs) for mapping and `ControllerInputs()`/`KeyBoardInputs()` in [Inputs.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/Inputs.cs) for input configuration.
 
@@ -147,7 +169,6 @@ See [HealthBar.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/
 ### Survival
 In survival mode, 1 or more players attempt to survive in the gamespace for as long as possble without being destroyed by enemies or by each other. In this game mode CPU enemies will spawn periodically throughout the environment with the spawn rate increasing as the player(s) runtime increases. There is a runtime counter at the top of the screen to indicate how long they have survived for. The goal of the game is simply to survive as long as possible.
 
-![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC1.png)
 ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC2.png)
 
 ### Sandbox
