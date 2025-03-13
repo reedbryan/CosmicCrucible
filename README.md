@@ -147,13 +147,13 @@ See [HealthBar.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/
 ### Survival
 In survival mode, 1 or more players attempt to survive in the gamespace for as long as possble without being destroyed by enemies or by each other. In this game mode CPU enemies will spawn periodically throughout the environment with the spawn rate increasing as the player(s) runtime increases. There is a runtime counter at the top of the screen to indicate how long they have survived for. The goal of the game is simply to survive as long as possible.
 
-![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC1)
-![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC2)
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC1.png)
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC2.png)
 
 ### Sandbox
 In sandbox mode, players are free to do as they please, without CPU interruption. Test out your ship's mobility and battle your friends in an open environment. Should you wish to fight CPUs, simply press 'n' on your keyboard and one will be spawned in near the player's location.
 
-![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SandboxSC)
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SandboxSC.png)
 
 <hr/>
 
