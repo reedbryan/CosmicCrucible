@@ -129,7 +129,7 @@ if (hit.CompareTag("Player")) // If this projectile makes contact with another p
 
     // Update velocity based on angle of collision
     Vector2 angle_of_collision = (Vector2)(transform.position - other_transform.position).normalized;
-    rb.velocity = other_playerCollisions.rb.velocity + rb.velocity * * angle_of_collision * 0.5f; // 0.5f for dampening
+    rb.velocity = other_playerCollisions.rb.velocity + rb.velocity * angle_of_collision * 0.5f; // 0.5f for dampening
 
     // Deal damage
     other_damageIntake.alterHP(-1.5f * impact, other_transform.position);
