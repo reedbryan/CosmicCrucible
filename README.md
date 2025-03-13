@@ -1,6 +1,6 @@
 # Cosmic Crucible
 
-<hr/>
+
 
 Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler with support for joystick contrtollers and local multiplyer with multiple gamemodes.
 
@@ -8,7 +8,7 @@ Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler 
 
 [Download](https://reedoover.itch.io/cosmic-crucible)
 
-<hr/>
+
 
 ## Table of Contents
 - [Features](#features)
@@ -30,7 +30,7 @@ Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler 
   - [Sandbox](#sandbox)
 - [Motivation](#motivation)
 
-<hr/>
+
 
 ## Features
 
@@ -77,13 +77,6 @@ Each entity is given a "desirability" rating calculated every frame, based on qu
 See the `getDesirability(GameObject subject)` function in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs) for full desirability calculations.
 
 The CPU will select the entity with the largest desirability magnitude (can be positive or negative) as its "target", identifying the target as either **moving** or **moving** and act occordingly (see [Behavior](#behavior) below).
-
-
-
-HERREHER
-
-
-
 
 #### Behavior
 If the CPU's target entity is **moving** it will simply point itself towards the target, applying thrust to move in that direction (see `targetStatic(GameObject mostDesirable)` in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs)). 
@@ -163,17 +156,15 @@ A layer with a deapth of 1 moves with the player, making it look like the stars 
 These stars were created using Unities [particle system](https://docs.unity3d.com/Manual/ParticleSystems.html) and are moved through the envirnoment from script (see [BackgroundLayer.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Environment/BackgroundLayer.cs)).
 
 #### Gameplay Feedback
-When a player (or CPU) is hit by a projectile, collides with another player or collects a health pack their health is altered and that alteration is displayed to the player via hit markers. These hit markers are UI objects, instantiated on a damage event and have different sizes depending on the amount of hitpoint gained/lost:
+When a player (or CPU) is hit by a projectile, collides with another player or collects a health pack their health is altered and that alteration is displayed to the player via hit markers. These hit markers are UI objects, instantiated on a damage event and have different sizes depending on the amount of hitpoint gained/lost (see [DamageMarker.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/InGame/DamageMarker.cs)).
 |  Gain   | Loss   |
 |---------|---------|
 | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/greenHM.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/redHM.png) |
 
-See [DamageMarker.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/InGame/DamageMarker.cs).
-
 Each player also has a "health bar" UI object attached to them representing the difference between their current HP and max HP.
 See [HealthBar.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/InGame/HealthBar.cs).
 
-<hr/>
+
 
 ## Game Modes
 ### Survival
@@ -186,7 +177,7 @@ In sandbox mode, players are free to do as they please, without CPU interruption
 
 ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SandboxSC.png)
 
-<hr/>
+
 
 ## Motivation
 My motivation for the project stemed from wanting to create a game I could play with my younger brothers. We would play all sorts of games together when we were younger and as a young indie game dev I felt obligated to create a game we could play together.
