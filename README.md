@@ -2,7 +2,7 @@
 
 <hr/>
 
-Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler with support for joystick contrtoller and local multiplyer with multiple gamemodes.
+Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler with support for joystick contrtollers and local multiplyer with multiple gamemodes.
 
 [Play online](https://simmer.io/@reedoover/cosmic-crucible)
 
@@ -36,25 +36,30 @@ Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler 
 
 ### Local Multiplayer
 This project supports local multiplayer. Simply connect controller(s) to your computer and click the "add player" button in the menu to create profiles for each player.
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerList.png)
 
 #### Keyboard/Controller input
-In the character creator (see below) you can select either "keyboard" or "controller" input, with the default being keyboard. Note, only one player can use keyboard input.
+In the character creator (see [Character Creator](#character-creator) below) you can select either "keyboard" or "controller" input, with the default being keyboard. Note that only one player can use keyboard input.
 
-Unity as customizable [input configurations](https://docs.unity3d.com/6000.0/Documentation/Manual/ios-handle-game-controller-input.html) for controller (joystick) input. In the Unity editor I set up joystick configurations for up to 3 controllers. Upon a player profile is created in the menu they are assigned a controllerNumber (0=keyboard, 1-3=controller) and are mapped to that players ID for input configuation.
+Unity has customizable [input configurations](https://docs.unity3d.com/6000.0/Documentation/Manual/ios-handle-game-controller-input.html) for controller (they call it joystick) input. Inputs can be configured in project settings under "input manager" (edit->project settings->input manager). Unity provides customization for both Joystick buttons and Axis for multiple controllers for attributes such as:
+- Sensitivity
+- Snap
+- Inversion
+- Alternate keys/buttons
+- Axis Gravity Scale
+- Dead Time
 
-See `createPlayerProfile(int controllerNumber)` function in [GameManager.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameManager.cs) for mapping and `ControllerInputs()`/`KeyBoardInputs()` in [Inputs.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/Inputs.cs) for input configuration.
+Using the input manager I configured inputs for the keyboard as well as 3 controllers. When a player profile is created in the menu they are assigned a controllerNumber (0=keyboard, 1-3=controller) and are mapped to that players ID for in-game input handling. See `createPlayerProfile(int controllerNumber)` function in [GameManager.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Main/GameManager.cs) for ID mapping and `ControllerInputs()`/`KeyBoardInputs()` in [Inputs.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/Inputs.cs) for in-game input handling.
 
 ### Character Creator
-Cosmic Crucible has a built in "ship" creator where select attributes of the player's ship can be altered for unique variable gameplay. To balance te ship builder, the player only has a certain amount of "cash" to spend alterations. The more an attribute is increased the more cash it will cost. Likewise, the more attribute is deacreased the more cash it will give back. This way the player can still create unique ships but is forced to lose certain stats in order to gain others.
+Cosmic Crucible has a built in "ship" creator where select attributes of the player's ship can be altered for unique and variable gameplay. To balance te ship builder, the player only has a certain amount of "cash" to spend alterations. The more an attribute is increased the more cash it will cost. Likewise, the more attribute is deacreased the more cash it will give back. This way the player can still create unique character-builds but is forced to lose certain stats in order to gain others.
 |  Before | After   |
 |---------|---------|
 | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerBuilder2.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerBuilder1.png) |
 
-All the stats from each ship are showcased in the "player list" before the players enter the game.
-![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/PlayerList.png)
 
 ### CPU Enemies
-In the "survival" gamemode the player(s) will fight against CPU enemies that spawn throughout the environment. These CPUs act indopendently and will attack each other as soon as the player.
+In the "survival" gamemode (see [Game Modes](#game-modes)) the player(s) will fight against CPU enemies that spawn throughout the environment. These CPUs act indopendently and will attack the player as well as each other.
 
 #### Entity Prioritatization
 Each CPU keeps track of all entities within a 200(unity meters) radius. 
@@ -63,7 +68,7 @@ Valid entities include:
 - Powerups & Health Packs
 - Projectiles: Bullets & Missiles
 
-Each entity is given a "desirability" rating calculated every frame an based on qualities such as:
+Each entity is given a "desirability" rating calculated every frame, based on qualities such as:
 - Proximity
 - Health (For other players)
 - Possible gain (For health packs & powerups)
@@ -71,7 +76,14 @@ Each entity is given a "desirability" rating calculated every frame an based on 
 
 See the `getDesirability(GameObject subject)` function in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs) for full desirability calculations.
 
-The CPU will select the entity with the largest desirability magnitude (positive or negative) as its "target", identifying the target as either **moving** or **moving** and will approch the target occordingly.
+The CPU will select the entity with the largest desirability magnitude (can be positive or negative) as its "target", identifying the target as either **moving** or **moving** and act occordingly (see [Behavior](#behavior) below).
+
+
+
+HERREHER
+
+
+
 
 #### Behavior
 If the CPU's target entity is **moving** it will simply point itself towards the target, applying thrust to move in that direction (see `targetStatic(GameObject mostDesirable)` in [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/CPU/CPU_Logic.cs)). 
@@ -98,14 +110,12 @@ Unity's 2D Physics Engine is highly customizable, allowing devs to fine-tune gra
 #### Simulating Space
 Turning off the gravity scale and adjusting for minimal angular and linear drag, allows for gameobjects to drift through the environment like they were in outer space (SO COOL).
 
-The ships operated by the player and CPUs move through the evironment by applying a constant force to the back of the object. Allowing players to have a very high maximum velocity but with the consiquence of needing to apply equal force in the opposite direction to slow down again. This makes for choatic and in my opion very fun movement mechanics.
-
-See [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/PlayerMovement.cs)
+The ships operated by the player and CPUs move through the evironment by applying a constant force to the back of the object. Allowing players to have a very high maximum velocity but with the consiquence of needing to apply equal force in the opposite direction to slow down again. This makes for choatic and in my opion very fun movement mechanics (see [PlayerMovement.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/PlayerMovement.cs)).
 
 #### Collisions
 Unity's Physics Engine handle collisions on its own but not quite in the way I wanted for the project. Unity's basic 2D collisions do not allow for two objects (with collider components) to pass bewteen each other. This is good but when two players collide at high speeds it lead to varying andd unpredictable results. Sometimes they would slide passed each other, maintaining velocity other times they would both come to an abrupt stop. I wanted a uniform reaction to player collision that also made for interesting gameplay. 
 
-To do this I wrote a script attached to each player to handle collisions (see [CPU_Logic.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/PlayerGraphics.cs)). The script distrubutes the difference in velocities upon collison back to the players, creating a sort of *bouncing* effect. On collision it also calculates an "impact" value based on the pre-collison velocity of the player. Each player's collision script will assign damage to the other player based on the impact value, rewarding the player who came into the collision with higher velocity. It will also create a particle explosion (scaled to the impact size) that inherites the player's velocity to show the magnitude of the collision.
+To do this I wrote a script attached to each player to handle collisions (see [PlayerGraphics.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Player/PlayerGraphics.cs)). The script distrubutes the difference in velocities upon collison back to the players, creating a sort of *bouncing* effect. On collision it also calculates an "impact" value based on the pre-collison velocity of the player. Each player's collision script will assign damage to the other player based on the impact value, rewarding the player who came into the collision with higher velocity. It will also create a particle explosion (scaled to the impact size) that inherites the player's velocity to show the magnitude of the collision.
 
 Below is a frame-by-frame display of a collision between a player (red) and a CPU (black). The player has more initial velocity, (indicated by a longer jet stream) and thus apon collision, takes less damage and maintains more of its velocity.
 
