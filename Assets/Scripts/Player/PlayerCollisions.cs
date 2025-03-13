@@ -32,7 +32,7 @@ public class PlayerCollisions : MonoBehaviour
             
             // Calculate impact value using stored velocity
             int impact = (int)rb.velocity.magnitude;
-            Debug.Log("Impact (before collision): " + impact);
+            //Debug.Log("Impact (before collision): " + impact);
 
             // Create explosion (based on impact value)
             createExplosion(impact);
