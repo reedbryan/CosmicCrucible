@@ -130,19 +130,30 @@ A layer with a deapth of 1 moves with the player, making it look like the stars 
 
 These stars were created using Unities [particle system](https://docs.unity3d.com/Manual/ParticleSystems.html) and are moved through the envirnoment from script (see [BackgroundLayer.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Environment/BackgroundLayer.cs)).
 
-#### Hit Markers & Health Bars
+#### Gameplay Feedback
 When a player (or CPU) is hit by a projectile, collides with another player or collects a health pack their health is altered and that alteration is displayed to the player via hit markers. These hit markers are UI objects, instantiated on a damage event and have different sizes depending on the amount of hitpoint gained/lost:
 |  Gain   | Loss   |
 |---------|---------|
 | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/greenHM.png) | ![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/ReadmeScreenShots/redHM.png) |
 
-Each player also has another UI object attached to them representing the difference between their current HP and max HP.
+See [DamageMarker.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/In Game/DamageMarker.cs).
+
+Each player also has a "health bar" UI object attached to them representing the difference between their current HP and max HP.
+See [HealthBar.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/In Game/HealthBar.cs).
 
 <hr/>
 
 ## Game Modes
 ### Survival
+In survival mode, 1 or more players attempt to survive in the gamespace for as long as possble without being destroyed by enemies or by each other. In this game mode CPU enemies will spawn periodically throughout the environment with the spawn rate increasing as the player(s) runtime increases. There is a runtime counter at the top of the screen to indicate how long they have survived for. The goal of the game is simply to survive as long as possible.
+
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC1)
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SurvivalSC2)
+
 ### Sandbox
+In sandbox mode, players are free to do as they please, without CPU interruption. Test out your ship's mobility and battle your friends in an open environment. Should you wish to fight CPUs, simply press 'n' on your keyboard and one will be spawned in near the player's location.
+
+![Alt text](https://raw.githubusercontent.com/reedbryan/CosmicCrucible/main/Assets/Sprites/UI/SandboxSC)
 
 <hr/>
 
