@@ -171,7 +171,7 @@ When a player (or CPU) is hit by a projectile, collides with another player or c
 See [DamageMarker.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/InGame/DamageMarker.cs).
 
 Each player also has a "health bar" UI object attached to them representing the difference between their current HP and max HP.
-See [HealthBar.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/In Game/HealthBar.cs).
+See [HealthBar.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/UI/InGame/HealthBar.cs).
 
 <hr/>
 
