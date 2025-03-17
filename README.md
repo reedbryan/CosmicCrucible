@@ -173,11 +173,11 @@ See [GameCamera.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets
 
 ### Graphics
 #### Stars
-The in-game environment has 3 layers of stars moving in the background. These stars move at different speeds reletive to the player to create the effect of moving through space. This is done by updating the position of each layer of stars by the players position multplied a value from 0 to 1 representing their deapth:
+The in-game environment has 3 layers of stars moving in the background. These stars move at different speeds reletive to the player to create the effect of moving through space. This is done by updating the position of each layer of stars by the players position multplied a value from 0 to 1 representing their depth:
 ```c#
-transform.position = (Vector2)mainCamera.transform.position * deapth;
+transform.position = (Vector2)mainCamera.transform.position * depth;
 ```
-A layer with a deapth of 1 moves with the player, making it look like the stars are so far in the background that the player doesn't even move reletive to their posistion. A layer with a deapth of 0.5 moves at half that speed to give the effect that the player is passing through the stars. In game the 3 star layers have deapth values of 1, 0.8 & 0.4, which I found to have most pleasing effect. 
+A layer with a depth of 1 moves with the player, making it look like the stars are so far in the background that the player doesn't even move reletive to their posistion. A layer with a depth of 0.5 moves at half that speed to give the effect that the player is passing through the stars. In game the 3 star layers have depth values of 1, 0.8 & 0.4, which I found to have most pleasing effect. 
 
 The stars were created using Unities [particle system](https://docs.unity3d.com/Manual/ParticleSystems.html) and are moved through the envirnoment from script (see [BackgroundLayer.cs](https://github.com/reedbryan/CosmicCrucible/blob/main/Assets/Scripts/Environment/BackgroundLayer.cs)).
 
