@@ -4,31 +4,31 @@
 
 Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler with support for joystick contrtollers and local multiplyer with multiple gamemodes.
 
-[Play online](https://simmer.io/@reedoover/cosmic-crucible)
+[Play online](https://cosmic-crucible.netlify.app/)
 
 [Download](https://reedoover.itch.io/cosmic-crucible)
 
 
 
-## Table of Contents
-- [Features](#features)
-  - [Local Multiplayer](#local-multiplayer)
-  - [Keyboard/Controller Input](#keyboardcontroller-input)
-  - [Character Creator](#character-creator)
-  - [CPU Enemies](#cpu-enemies)
-    - [Entity Prioritization](#entity-prioritization)
-    - [Behavior](#behavior)
-  - [Physics](#physics)
-    - [Simulating Space](#simulating-space)
-    - [Collisions](#collisions)
-  - [Scaling Camera](#scaling-camera)
-  - [Graphics](#graphics)
-    - [Stars](#stars)
-    - [Gameplay Feedback](#gameplay-feedback)
-- [Game Modes](#game-modes)
-  - [Survival](#survival)
-  - [Sandbox](#sandbox)
-- [Motivation](#motivation)
+    ## Table of Contents
+    - [Features](#features)
+    - [Local Multiplayer](#local-multiplayer)
+    - [Keyboard/Controller Input](#keyboardcontroller-input)
+    - [Character Creator](#character-creator)
+    - [CPU Enemies](#cpu-enemies)
+        - [Entity Prioritization](#entity-prioritization)
+        - [Behavior](#behavior)
+    - [Physics](#physics)
+        - [Simulating Space](#simulating-space)
+        - [Collisions](#collisions)
+    - [Scaling Camera](#scaling-camera)
+    - [Graphics](#graphics)
+        - [Stars](#stars)
+        - [Gameplay Feedback](#gameplay-feedback)
+    - [Game Modes](#game-modes)
+    - [Survival](#survival)
+    - [Sandbox](#sandbox)
+    - [Motivation](#motivation)
 
 
 
