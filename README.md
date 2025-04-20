@@ -4,7 +4,7 @@
 
 Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler with support for joystick contrtollers and local multiplyer with multiple gamemodes.
 
-<a href="https://cosmic-crucible.netlify.app/" target="_blank">Play online</a>
+[Play online](https://cosmic-crucible.netlify.app/)
 
 [Download](https://reedoover.itch.io/cosmic-crucible)
 
