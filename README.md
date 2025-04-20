@@ -10,25 +10,25 @@ Made using the Unity Game Engine, Cosmic Crucible is a 2D physics based brawler 
 
 
 
-    ## Table of Contents
-    - [Features](#features)
-    - [Local Multiplayer](#local-multiplayer)
-    - [Keyboard/Controller Input](#keyboardcontroller-input)
-    - [Character Creator](#character-creator)
-    - [CPU Enemies](#cpu-enemies)
-        - [Entity Prioritization](#entity-prioritization)
-        - [Behavior](#behavior)
-    - [Physics](#physics)
-        - [Simulating Space](#simulating-space)
-        - [Collisions](#collisions)
-    - [Scaling Camera](#scaling-camera)
-    - [Graphics](#graphics)
-        - [Stars](#stars)
-        - [Gameplay Feedback](#gameplay-feedback)
-    - [Game Modes](#game-modes)
-    - [Survival](#survival)
-    - [Sandbox](#sandbox)
-    - [Motivation](#motivation)
+## Table of Contents
+- [Features](#features)
+- [Local Multiplayer](#local-multiplayer)
+- [Keyboard/Controller Input](#keyboardcontroller-input)
+- [Character Creator](#character-creator)
+- [CPU Enemies](#cpu-enemies)
+    - [Entity Prioritization](#entity-prioritization)
+    - [Behavior](#behavior)
+- [Physics](#physics)
+    - [Simulating Space](#simulating-space)
+    - [Collisions](#collisions)
+- [Scaling Camera](#scaling-camera)
+- [Graphics](#graphics)
+    - [Stars](#stars)
+    - [Gameplay Feedback](#gameplay-feedback)
+- [Game Modes](#game-modes)
+- [Survival](#survival)
+- [Sandbox](#sandbox)
+- [Motivation](#motivation)
 
 
 
